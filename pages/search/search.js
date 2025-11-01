@@ -1067,4 +1067,9 @@ btn.addEventListener('click', () => {
         checked = true
         localStorage.setItem('checked', checked)
     }
+
 })
+
+setTimeout(() => {
+    genloader_hide()
+}, 2000);
