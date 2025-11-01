@@ -1,0 +1,425 @@
+@charset "UTF-8";
+body {
+  background-color: #000;
+  color: #fff;
+  height: 100vh;
+}
+
+.container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 70px 10px;
+}
+
+.form-container {
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 30px 25px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px #f36607;
+  transition: all 0.4s ease;
+  animation: formAppear 0.6s ease-out;
+}
+
+@keyframes formAppear {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.login-form {
+  display: block;
+  animation: fadeIn 0.5s ease;
+}
+
+.registration-form {
+  display: none;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+h1 {
+  color: #fff;
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 26px;
+  font-weight: 600;
+  animation: titleSlide 0.7s ease-out;
+}
+
+@keyframes titleSlide {
+  0% {
+    transform: translateY(-15px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.form-group {
+  margin-bottom: 18px;
+  position: relative;
+  animation: formGroupSlide 0.5s ease-out;
+  animation-fill-mode: both;
+}
+
+/* Задержка для последовательной анимации полей формы */
+.form-group:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.form-group:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.form-group:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.form-group:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.form-group:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+@keyframes formGroupSlide {
+  0% {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+label {
+  display: block;
+  margin-bottom: 8px;
+  color: #fff;
+  font-weight: 500;
+  font-size: 15px;
+  transition: all 0.3s ease;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 14px 16px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  color: #fff;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #f36607;
+  box-shadow: 0 0 0 2px #f36607;
+  transform: scale(1.02);
+}
+
+/* Анимация при валидации */
+input:valid {
+  border-color: rgba(76, 175, 80, 0.5);
+}
+
+input:invalid:not(:focus):not(:-moz-placeholder) {
+  border-color: rgba(244, 67, 54, 0.5);
+  animation: shake 0.5s ease;
+}
+
+input:invalid:not(:focus):not(:placeholder-shown) {
+  border-color: rgba(244, 67, 54, 0.5);
+  animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+/* Анимация placeholder */
+input::-moz-placeholder {
+  -moz-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  color: rgba(255, 255, 255, 0.5);
+}
+input::placeholder {
+  transition: all 0.3s ease;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+input:focus::-moz-placeholder {
+  transform: translateY(-15px);
+  opacity: 0;
+}
+
+input:focus::placeholder {
+  transform: translateY(-15px);
+  opacity: 0;
+}
+
+/* Анимация для select */
+select {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23f36607'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 16px;
+  padding-right: 40px;
+}
+
+select:focus {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+}
+
+select option {
+  background-color: #333;
+  color: #fff;
+}
+
+.btn {
+  width: 100%;
+  padding: 16px;
+  background-color: #f36607;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 5px;
+  position: relative;
+  overflow: hidden;
+  animation: btnPulse 2s infinite;
+}
+
+@keyframes btnPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(243, 102, 7, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(243, 102, 7, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(243, 102, 7, 0);
+  }
+}
+.btn:hover,
+.btn:active {
+  background-color: #e05e06;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px #f36607;
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+/* Эффект волны при клике */
+.btn::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  border-radius: 100%;
+  transform: scale(1, 1) translate(-50%);
+  transform-origin: 50% 50%;
+}
+
+.btn:focus:not(:active)::after {
+  animation: ripple 1s ease-out;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0, 0);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(20, 20);
+    opacity: 0;
+  }
+}
+.toggle-link {
+  text-align: center;
+  margin-top: 20px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 15px;
+  animation: fadeIn 0.8s ease;
+}
+
+.toggle-link a {
+  color: #f36607;
+  text-decoration: none;
+  font-weight: 500;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.toggle-link a::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: #f36607;
+  transform: scaleX(0);
+  transform-origin: bottom right;
+  transition: transform 0.3s ease;
+}
+
+.toggle-link a:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 22px 0;
+  color: rgba(255, 255, 255, 0.5);
+  animation: fadeIn 0.8s ease;
+}
+
+.divider span {
+  padding: 0 12px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.age-note {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 5px;
+  display: block;
+  animation: fadeIn 0.8s ease;
+}
+
+/* Анимация переключения форм */
+.show-registration .login-form {
+  display: none;
+}
+
+.show-registration .registration-form {
+  display: block;
+  animation: slideIn 0.5s ease;
+}
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+/* Адаптивность для мобильных устройств */
+@media (max-width: 480px) {
+  .form-container {
+    padding: 25px 20px;
+  }
+  h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  input,
+  select {
+    padding: 12px 14px;
+    font-size: 16px;
+  }
+  .btn {
+    padding: 14px;
+  }
+}
+@media (max-width: 360px) {
+  .form-container {
+    padding: 20px 15px;
+  }
+  h1 {
+    font-size: 22px;
+  }
+  .form-group {
+    margin-bottom: 15px;
+  }
+  .divider {
+    margin: 18px 0;
+  }
+}
+/* Адаптивность для планшетов */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .form-container {
+    padding: 40px 35px;
+  }
+}
+/* Поддержка ориентации телефона */
+@media (max-height: 600px) and (orientation: landscape) {
+  .form-container {
+    padding: 20px;
+  }
+  .form-group {
+    margin-bottom: 12px;
+  }
+  h1 {
+    margin-bottom: 15px;
+    font-size: 22px;
+  }
+}
+/* Улучшение доступности для сенсорных устройств */
+@media (hover: none) and (pointer: coarse) {
+  .btn,
+  .toggle-link a {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  input,
+  select {
+    font-size: 16px;
+  }
+}
+/* Поддержка темной темы по умолчанию */
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #000;
+  }
+}

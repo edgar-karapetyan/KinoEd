@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- favicon -->
+<link rel="icon" type="image/png" href="favicon-96x96.png" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<link rel="shortcut icon" href="favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-title" content="KinoEd" />
+<link rel="manifest" href="site.webmanifest" />
+    <!-- Open Graph для соцсетей -->
+    <meta property="og:title" content="KinoEd - Онлайн кинотеатр">
+    <meta property="og:description" content="Смотрите фильмы и сериалы онлайн в HD качестве">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kinoed.us">
+    <meta property="og:image" content="./assets/img/kinoed.png">
+
+    <title>Регистрация и Вход</title>
+
+    <!-- Подключаем стили -->
+    <link rel="stylesheet" href="./css/helper.css">
+    <link rel="stylesheet" href="./css/gen.css">
+    <link rel="stylesheet" href="./css/header.css">
+    <link rel="stylesheet" href="./css/footer.css">
+    <link rel="stylesheet" href="./pages/login/login.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="right">
+                <div class="logo">
+                    <a href="./index.html">
+                        <img src="./assets/img/kinoed_top_logo.png" alt="logo">
+                    </a>
+                </div>
+            </div>
+
+            <div class="burger_btn offactive" id="burger_btn">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+
+            <div class="burger" id="burger">
+                <div class="center">
+                    <ul>
+                        <a href="./searchBy.html?genre=action">
+                            <li class="wave-text">Фильмы</li>
+                        </a>
+                        <a href="./searchBy.html?genre=series">
+                            <li class="wave-text">Сериалы</li>
+                        </a>
+                        <a href="./searchBy.html?genre=new">
+                            <li class="wave-text">Новинки</li>
+                        </a>
+                        <a href="./searchBy.html?genre=top">
+                            <li class="wave-text">Топ</li>
+                        </a>
+                    </ul>
+                </div>
+
+                <div class="left">
+                    <a href="./search.html" class="search" id="search">
+                        <img src="./assets/img/search.png" alt="search">
+                    </a>
+                    <div class="notificationBell">
+                        <img src="./assets/img/notification_bell.png" alt="notification bell">
+                    </div>
+                    <a href="./login.html" class="login">
+                        <img src="./assets/img/user.png" alt="login">
+                        <span>Войти</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <div class="form-container">
+            <!-- Форма входа -->
+            <div class="login-form">
+                <h1>Вход</h1>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" name="email" placeholder="Введите ваш email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loginPassword">Пароль</label>
+                        <input type="password" id="loginPassword" name="password" placeholder="Введите ваш пароль"
+                            required>
+                    </div>
+
+                    <button type="submit" class="btn">Войти</button>
+                </form>
+
+                <div class="divider">
+                    <span>Ваши данные не передаются и не разглашаются третьим лицам.</span>
+                </div>
+
+                <div class="toggle-link">
+                    Нет аккаунта? <a id="showRegistration">Зарегистрироваться</a>
+                </div>
+            </div>
+
+            <!-- Форма регистрации -->
+            <div class="registration-form">
+                <h1>Регистрация</h1>
+                <form id="registrationForm">
+                    <div class="form-group">
+                        <label for="name">Имя</label>
+                        <input type="text" id="name" name="name" placeholder="Введите ваше имя" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="Введите ваш email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="age">Возраст</label>
+                        <select id="age" name="age" required>
+                            <script>
+                                for (let i = 13; i <= 100; i++) {
+                                    document.write(`<option value="${i}">${i} лет</option>`);
+                                }
+                            </script>
+                        </select>
+                        <span class="age-note">Регистрация доступна для пользователей от 13 лет</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Пароль</label>
+                        <input type="password" id="password" name="password" placeholder="Придумайте пароль" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Подтвердите пароль</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword"
+                            placeholder="Повторите пароль" required>
+                    </div>
+
+                    <button type="submit" class="btn">Зарегистрироваться</button>
+                </form>
+
+                <div class="divider">
+                    <span>Ваши данные не передаются и не разглашаются третьим лицам.</span>
+                </div>
+
+                <div class="toggle-link">
+                    Уже есть аккаунт? <a id="showLogin">Войти</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/gen.js"></script>
+    <script src="./pages/login/login.js"></script>
+</body>
+
+</html>

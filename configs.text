@@ -1,0 +1,12 @@
+// Показываем лоадер
+    showFilters_loader()
+
+// скрыть лоадер
+    hideFilters_loader()
+
+.filters_loader
+
+_______________________________________
+
+gen Loader
+genloader_hide() off

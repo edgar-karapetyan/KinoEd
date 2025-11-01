@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KinoEd - Смотрите фильмы, сериалы, Мультфильмы, Аниме, онлайн в HD качестве</title>
+    <meta name="description"
+        content="KinoEd - лучший онлайн кинотеатр. Смотрите фильмы, сериалы, новинки кино в HD качестве. Боевики, комедии, драмы, фантастика и многое другое.">
+    <meta name="keywords"
+        content="фильмы онлайн, сериалы, смотреть кино, новинки кино, топ фильмы, боевики, комедии, драмы ,Мультфильмы, Аниме">
+    <meta name="robots" content="index, follow">
+    <!-- favicon -->
+    <link rel="icon" type="image/png" href="favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="KinoEd" />
+    <link rel="manifest" href="site.webmanifest" />
+    <!-- Open Graph для соцсетей -->
+    <meta property="og:title" content="KinoEd - Онлайн кинотеатр">
+    <meta property="og:description" content="Смотрите фильмы и сериалы онлайн в HD качестве">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kinoed.us">
+    <meta property="og:image" content="./assets/img/kinoed.png">
+    <!-- Каноническая ссылка -->
+    <link rel="canonical" href="https://kinoed.us">
+    <!-- Подключаем стили Swiper -->
+    <link rel="stylesheet" href="./swiper/swiper-bundle.min.css">
+    <link rel="stylesheet" href="./swiper/swiperStyles.css">
+    <!-- Подключаем скрипт Swiper -->
+    <script src="./swiper/swiper-bundle.min.js"></script>
+    <!-- Подключаем стили -->
+    <link rel="stylesheet" href="./css/gen.css">
+    <link rel="stylesheet" href="./swiper/topSwipper.css">
+    <link rel="stylesheet" href="./css/helper.css">
+    <link rel="stylesheet" href="./css/header.css">
+    <link rel="stylesheet" href="./css/footer.css">
+
+    <title>kinoed</title>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="right">
+                <div class="logo">
+                    <a href="./index.html">
+                        <img src="./assets/img/kinoed_top_logo.png" alt="logo">
+                    </a>
+                </div>
+            </div>
+
+            <div class="burger_btn offactive" id="burger_btn">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+
+            <div class="burger" id="burger">
+                <div class="center">
+                    <ul>
+                        <a href="./searchBy.html?genre=action">
+                            <li class="wave-text">Фильмы</li>
+                        </a>
+                        <a href="./searchBy.html?genre=series">
+                            <li class="wave-text">Сериалы</li>
+                        </a>
+                        <a href="./searchBy.html?genre=new">
+                            <li class="wave-text">Новинки</li>
+                        </a>
+                        <a href="./searchBy.html?genre=top">
+                            <li class="wave-text">Топ</li>
+                        </a>
+                    </ul>
+                </div>
+
+                <div class="left">
+                    <a href="./search.html" class="search" id="search">
+                        <img src="./assets/img/search.png" alt="search">
+                    </a>
+                    <div class="notificationBell">
+                        <img src="./assets/img/notification_bell.png" alt="notification bell">
+                    </div>
+                    <a href="./login.html" class="login">
+                        <img src="./assets/img/user.png" alt="login">
+                        <span>Войти</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="topslider">
+            <div class="swiper top_swipper">
+                <!-- Слайды из API -->
+                <div class="swiper-wrapper" id="swiperMovies"></div>
+
+                <!-- Пагинация -->
+                <div class="swiper-pagination swiper-pagination1"></div>
+
+                <!-- Стрелки -->
+                <div class="swiper-button-prev swiper-button-prev1"></div>
+                <div class="swiper-button-next swiper-button-next1"></div>
+            </div>
+        </div>
+
+        <div class="categories">
+            <!-- Слайдер 1 -->
+            <h2 class="slider-titles"><a href="./searchBy.html?genre=action" title="Смотреть боевики онлайн">Боевики</a></h2>
+            <div class="swiper mySwiper2">
+                <div class="swiper-wrapper" id="categorySlider_2"></div>
+                <div class="swiper-button-prev swiper-button-prev2"></div>
+                <div class="swiper-button-next swiper-button-next2"></div>
+            </div>
+
+            <!-- Слайдер 2 -->
+            <h2 class="slider-titles"><a href="./searchBy.html?genre=fantasy" title="Смотреть фантастику онлайн">Фантастика</a></h2>
+            <div class="swiper mySwiper3">
+                <div class="swiper-wrapper" id="categorySlider_3"></div>
+                <div class="swiper-button-prev swiper-button-prev3"></div>
+                <div class="swiper-button-next swiper-button-next3"></div>
+            </div>
+
+            <!-- Слайдер 3 -->
+            <h2 class="slider-titles"><a href="./searchBy.html?genre=cartoon" title="Смотреть Мультфильмы онлайн">Мультфильмы</a></h2>
+            <div class="swiper mySwiper4">
+                <div class="swiper-wrapper" id="categorySlider_4"></div>
+                <div class="swiper-button-prev swiper-button-prev4"></div>
+                <div class="swiper-button-next swiper-button-next4"></div>
+            </div>
+
+            <!-- Слайдер 5 -->
+            <h2 class="slider-titles"><a href="./searchBy.html?genre=comedy" title="Смотреть Комедии онлайн">Комедии</a></h2>
+            <div class="swiper mySwiper5">
+                <div class="swiper-wrapper" id="categorySlider_5"></div>
+                <div class="swiper-button-prev swiper-button-prev5"></div>
+                <div class="swiper-button-next swiper-button-next5"></div>
+            </div>
+
+            <!-- Слайдер 6 -->
+            <h2 class="slider-titles"><a href="./searchBy.html?genre=triller" title="Смотреть Триллеры онлайн">Триллеры</a></h2>
+            <div class="swiper mySwiper6">
+                <div class="swiper-wrapper" id="categorySlider_6"></div>
+                <div class="swiper-button-prev swiper-button-prev6"></div>
+                <div class="swiper-button-next swiper-button-next6"></div>
+            </div>
+
+            <!-- Слайдер 7 -->
+            <h2 class="slider-titles"><a href="./searchBy.html?genre=drama" title="Смотреть драму онлайн">Драма</a></h2>
+            <div class="swiper mySwiper7">
+                <div class="swiper-wrapper" id="categorySlider_7"></div>
+                <div class="swiper-button-prev swiper-button-prev7"></div>
+                <div class="swiper-button-next swiper-button-next7"></div>
+            </div>
+
+            <!-- Слайдер 8 -->
+            <h2 class="slider-titles"><a href="./searchBy.html?genre=horrors" title="Смотреть Ужасы онлайн">Ужасы</a></h2>
+            <div class="swiper mySwiper8">
+                <div class="swiper-wrapper" id="categorySlider_8"></div>
+                <div class="swiper-button-prev swiper-button-prev8"></div>
+                <div class="swiper-button-next swiper-button-next8"></div>
+            </div>
+
+            <!-- Слайдер 9 -->
+            <h2 class="slider-titles"><a href="./searchBy.html?genre=anime" title="Смотреть Аниме онлайн">Аниме</a></h2>
+            <div class="swiper mySwiper9">
+                <div class="swiper-wrapper" id="categorySlider_9"></div>
+                <div class="swiper-button-prev swiper-button-prev9"></div>
+                <div class="swiper-button-next swiper-button-next9"></div>
+            </div>
+
+            <!-- Слайдер 10 -->
+            <h2 class="slider-titles"><a href="./searchBy.html?genre=adventures" title="Смотреть Приключения онлайн">Приключения</a></h2>
+            <div class="swiper mySwiper10">
+                <div class="swiper-wrapper" id="categorySlider_10"></div>
+                <div class="swiper-button-prev swiper-button-prev10"></div>
+                <div class="swiper-button-next swiper-button-next10"></div>
+            </div>
+
+            <!-- Слайдер 11 -->
+            <h2 class="slider-titles"><a href="./searchBy.html?genre=dorama" title="Смотреть дораму онлайн">Дорама</a></h2>
+            <div class="swiper mySwiper11">
+                <div class="swiper-wrapper" id="categorySlider_11"></div>
+                <div class="swiper-button-prev swiper-button-prev11"></div>
+                <div class="swiper-button-next swiper-button-next11"></div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__top">
+                <div class="footer__about">
+                    <img class="footer__logo" src="./assets/img/kinoed.png">
+                    <p class="footer__desc">
+                        Ваш лучший кинотеатр онлайн. Смотрите фильмы и сериалы в HD качестве.
+                    </p>
+                </div>
+
+                <div class="footer__nav">
+                    <h3 class="footer__title">Навигация</h3>
+                    <ul class="footer__list">
+                        <li><a href="./searchBy.html?genre=action">Фильмы</a></li>
+                        <li><a href="./searchBy.html?genre=series">Сериалы</a></li>
+                        <li><a href="./searchBy.html?genre=new">Новинки</a></li>
+                        <li><a href="./searchBy.html?genre=top">Топ</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer__genres">
+                    <h3 class="footer__title">Жанры</h3>
+                    <ul class="footer__list">
+                        <li><a href="#">Боевики</a></li>
+                        <li><a href="#">Комедии</a></li>
+                        <li><a href="#">Драмы</a></li>
+                        <li><a href="#">Фантастика</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer__contacts">
+                    <h3 class="footer__title">Контакты</h3>
+                    <ul class="footer__list">
+                        <li><a href="mailto:info@KinoEd.com">info@KinoEd.com</a></li>
+                        <li><a href="tel:+79991234567">+7 (999) 123-45-67</a></li>
+                        <li>Москва, Россия</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer__bottom">
+                <p>© 2025 KinoEd. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="genLoader">
+        <div class="loader_cont">
+            <img src="./assets/img/kinoed-loader.png" alt="kinoed loader">
+        </div>
+    </div>
+
+    <script src="./js/gen.js"></script>
+    <script src="./js/top_slider_api.js"></script>
+    <script src="./js/categories_sliders.js"></script>
+</body>
+
+</html>

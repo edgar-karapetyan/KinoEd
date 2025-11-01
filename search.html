@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="KinoEd - лучший онлайн кинотеатр. Смотрите фильмы, сериалы, новинки кино в HD качестве. Боевики, комедии, драмы, фантастика и многое другое.">
+    <meta name="keywords"
+        content="фильмы онлайн, сериалы, смотреть кино, новинки кино, топ фильмы, боевики, комедии, драмы ,Мультфильмы, Аниме">
+    <meta name="robots" content="index, follow">
+    <!-- favicon -->
+    <link rel="icon" type="image/png" href="favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="KinoEd" />
+    <link rel="manifest" href="site.webmanifest" />
+    <!-- Open Graph для соцсетей -->
+    <meta property="og:title" content="KinoEd - Онлайн кинотеатр">
+    <meta property="og:description" content="Смотрите фильмы и сериалы онлайн в HD качестве">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kinoed.us">
+    <meta property="og:image" content="/assets/img/kinoed.png">
+    <!-- Подключаем стили -->
+    <link rel="stylesheet" href="./css/helper.css">
+    <link rel="stylesheet" href="./css/gen.css">
+    <link rel="stylesheet" href="./css/header.css">
+    <link rel="stylesheet" href="./css/footer.css">
+    <link rel="stylesheet" href="./pages/search/search.css">
+    <title>kinoed search</title>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="right">
+                <div class="logo">
+                    <a href="./index.html">
+                        <img src="./assets/img/kinoed_top_logo.png" alt="logo">
+                    </a>
+                </div>
+            </div>
+
+            <div class="burger_btn offactive" id="burger_btn">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+
+            <div class="burger" id="burger">
+                <div class="center">
+                    <ul>
+                        <a href="./searchBy.html?genre=action">
+                            <li class="wave-text">Фильмы</li>
+                        </a>
+                        <a href="./searchBy.html?genre=series">
+                            <li class="wave-text">Сериалы</li>
+                        </a>
+                        <a href="./searchBy.html?genre=new">
+                            <li class="wave-text">Новинки</li>
+                        </a>
+                        <a href="./searchBy.html?genre=top">
+                            <li class="wave-text">Топ</li>
+                        </a>
+                    </ul>
+                </div>
+
+                <div class="left">
+                    <a href="./search.html" class="search" id="search">
+                        <img src="./assets/img/search.png" alt="search">
+                    </a>
+                    <div class="notificationBell">
+                        <img src="./assets/img/notification_bell.png" alt="notification bell">
+                    </div>
+                    <a href="./login.html" class="login">
+                        <img src="./assets/img/user.png" alt="login">
+                        <span>Войти</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1>Поиск фильмов</h1>
+            <section class="search-section">
+                <div class="search-box">
+                    <img src="./assets/img/search_orange.png" alt="search">
+                    <input type="text" class="search-input" placeholder="Используйте фильтры для точного поиска"
+                        id="searchInput">
+                </div>
+            </section>
+
+            <div class="filters" id="filters">
+                <div class="filters-top">
+
+                    <div class="filters-top-title">
+                        <div>
+                            <img src="./assets/img/filter_icon.png" alt="Фильтр">
+                            <span>Фильтры</span>
+                        </div>
+                        <div class="filters-top-btn" id="filters_top_btn">
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </div>
+                    <button class="reset-filters" id="resetFilters">Сбросить фильтры</button>
+                </div>
+
+                <div class="filters-container">
+                    <div class="filter-group">
+                        <span class="filter-span">Категория</span>
+                        <div class="custom-select" id="category">
+                            <div class="select-selected">Все Категории</div>
+                            <div class="select-items select-hide">
+                                <div>Все Категории</div>
+                                <div data-value="movie">Фильм</div>
+                                <div data-value="series">Сериал</div>
+                                <div data-value="cartoon">Мультфильм</div>
+                                <div data-value="documentary">Документальный</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <span class="filter-span">Жанр</span>
+                        <div class="custom-select" id="genreSelect">
+                            <div class="select-selected">Все жанры</div>
+                            <div class="select-items select-hide">
+                                <div>Все жанры</div>
+                                <div data-value="action">Боевик</div>
+                                <div data-value="comedy">Комедия</div>
+                                <div data-value="drama">Драма</div>
+                                <div data-value="horror">Ужасы</div>
+                                <div data-value="sci-fi">Фантастика</div>
+                                <div data-value="thriller">Триллер</div>
+                                <div data-value="fantasy">Фэнтези</div>
+                                <div data-value="romance">Мелодрама</div>
+                                <div data-value="detective">Детектив</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <span class="filter-span">Год выпуска</span>
+                        <div class="custom-select" id="yearSelect">
+                            <div class="select-selected">Все годы</div>
+                            <div class="select-items select-hide">
+                                <div>Все годы</div>
+                                <div data-value="2024">2024</div>
+                                <div data-value="2023">2023</div>
+                                <div data-value="2022">2022</div>
+                                <div data-value="2021">2021</div>
+                                <div data-value="2020">2020</div>
+                                <div data-value="2019">2019</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <span class="filter-span">Страна</span>
+                        <div class="custom-select" id="countrySelect">
+                            <div class="select-selected">Все страны</div>
+                            <div class="select-items select-hide">
+                                <div>Все страны</div>
+                                <div data-value="usa">США</div>
+                                <div data-value="russia">Россия</div>
+                                <div data-value="uk">Великобритания</div>
+                                <div data-value="france">Франция</div>
+                                <div data-value="germany">Германия</div>
+                                <div data-value="korea">Южная Корея</div>
+                                <div data-value="japan">Япония</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <span class="filter-span">Язык</span>
+                        <div class="custom-select" id="languageSelect">
+                            <div class="select-selected">Все языки</div>
+                            <div class="select-items select-hide">
+                                <div>Все языки</div>
+                                <div data-value="russian">Русский</div>
+                                <div data-value="english">Английский</div>
+                                <div data-value="french">Французский</div>
+                                <div data-value="german">Немецкий</div>
+                                <div data-value="korean">Корейский</div>
+                                <div data-value="japanese">Японский</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ДОБАВЛЕН ФИЛЬТР РЕЙТИНГА -->
+                    <div class="filter-group">
+                        <span class="filter-span">Рейтинг
+                            <span id="ratingValue" class="range-value">0 - 10</span>
+                        </span>
+                        <div class="rating-filter">
+                            <div class="rating-sliders">
+                                <input type="range" id="ratingFrom" min="0" max="10" step="0.1" value="0"
+                                    class="rating-slider">
+                                <input type="range" id="ratingTo" min="0" max="10" step="0.1" value="10"
+                                    class="rating-slider">
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <section class="results-section">
+                <div class="results-grid filters_loader" id="resultsContainer">
+                    <!-- Результаты будут добавляться здесь -->
+                </div>
+            </section>
+
+            <div id="pagination" class="pagination"></div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__top">
+                <div class="footer__about">
+                    <img class="footer__logo" src="./assets/img/kinoed.png">
+                    <p class="footer__desc">
+                        Ваш лучший кинотеатр онлайн. Смотрите фильмы и сериалы в HD качестве.
+                    </p>
+                </div>
+
+                <div class="footer__nav">
+                    <h3 class="footer__title">Навигация</h3>
+                    <ul class="footer__list">
+                        <li><a href="#">Фильмы</a></li>
+                        <li><a href="#">Сериалы</a></li>
+                        <li><a href="#">Новинки</a></li>
+                        <li><a href="#">Топ</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer__genres">
+                    <h3 class="footer__title">Жанры</h3>
+                    <ul class="footer__list">
+                        <li><a href="#">Боевики</a></li>
+                        <li><a href="#">Комедии</a></li>
+                        <li><a href="#">Драмы</a></li>
+                        <li><a href="#">Фантастика</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer__contacts">
+                    <h3 class="footer__title">Контакты</h3>
+                    <ul class="footer__list">
+                        <li><a href="mailto:info@KinoEd.com">info@KinoEd.com</a></li>
+                        <li><a href="tel:+79991234567">+7 (999) 123-45-67</a></li>
+                        <li>Москва, Россия</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer__bottom">
+                <p>© 2025 KinoEd. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="genLoader">
+        <div class="loader_cont">
+            <img src="./assets/img/kinoed-loader.png" alt="kinoed loader">
+        </div>
+    </div>
+
+    <script src="./js/gen.js"></script>
+    <script src="./pages/search/search.js"></script>
+</body>
+
+</html>

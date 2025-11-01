@@ -1,0 +1,506 @@
+// ===== COLOR VARIABLES =====
+$color-primary: #f36607;
+$color-primary-dark: darken($color-primary, 15%);
+$color-primary-darker: darken($color-primary, 20%);
+$color-bg-dark: #000000;
+$color-bg-grey: #0e0e0e;
+$color-bg-lightgrey: #3c3c3c;
+$color-text-white: #ffffff;
+$color-bg-header: #121212;
+$color-bg-darker: #141313;
+$color-bg-card: #1d1c1b;
+$color-text-gray: rgb(194, 194, 194);
+
+// ===== BORDER RADIUS =====
+$border-radius-small: 2px;
+$border-radius-medium: 4px;
+$border-radius-large: 8px;
+
+// ===== TRANSITIONS =====
+$transition-fast: 0.1s ease;
+$transition-normal: 0.3s ease;
+$transition-slow: 0.4s ease;
+$transition-header: 250ms;
+$transition-logo: 300ms;
+$transition-menu: 700ms;
+$transition-burger: 0.4s ease;
+
+// ===== BREAKPOINTS =====
+$breakpoint-mobile: 768px;
+$breakpoint-tablet: 700px;
+$breakpoint-small: 480px;
+
+// ===== SIZES =====
+$scrollbar-size-default: 8px;
+$scrollbar-size-small: 6px;
+$scrollbar-size-mobile: 4px;
+
+$loader-width: 60px;
+$loader-height: 50px;
+$loader-bar-width: 12px;
+$loader-bar-height: 40px;
+
+$movie-container-padding: 90px 20px;
+$movie-container-padding-tablet: 70px 15px;
+$movie-container-padding-mobile: 60px 10px;
+
+$top-properties-padding-mobile: 3px 8px;
+
+
+// gen loader 
+.genLoader {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    top: 0;
+    right: 0;
+    z-index: 100000;
+    transition: 1s;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .loader_cont {
+        position: relative;
+        width: 250px;
+
+        &::before {
+            content: '';
+            background-image: url(../assets/img/film-roll.png);
+            background-size: contain;
+            background-repeat: no-repeat;
+            position: absolute;
+            top: 8px;
+            left: 7px;
+            width: 20px;
+            height: 20px;
+            filter: drop-shadow(0px 0px 1px #f36607);
+            animation: rotate-film-roll linear infinite 1s;
+        }
+
+        &::after {
+            content: '';
+            background-image: url(../assets/img/film-roll.png);
+            background-size: contain;
+            background-repeat: no-repeat;
+            position: absolute;
+            top: 8px;
+            left: 28px;
+            width: 20px;
+            height: 20px;
+            filter: drop-shadow(0px 0px 1px #f36607);
+            animation: rotate-film-roll linear infinite 1s;
+        }
+
+        @keyframes rotate-film-roll {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        img {
+            width: 100%;
+            height: auto;
+        }
+    }
+}
+
+// ===== BASE STYLES =====
+html,
+body {
+    background-color: $color-bg-header;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    scroll-behavior: smooth;
+    width: 100%;
+    position: relative;
+    overflow-x: hidden !important;
+}
+
+body {
+    background-color: $color-bg-dark;
+    overflow-x: hidden;
+
+    &::-webkit-scrollbar {
+        width: 12px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: $color-bg-dark;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, $color-primary, $color-primary-dark);
+        border: 2px solid $color-bg-dark;
+        border-radius: 6px;
+    }
+}
+
+main {
+    position: relative;
+}
+
+.movie-container {
+    padding: $movie-container-padding;
+    max-width: 1920px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+// ===== SCROLLBAR STYLES =====
+::-webkit-scrollbar {
+    width: $scrollbar-size-default;
+    height: $scrollbar-size-default;
+}
+
+::-webkit-scrollbar-track {
+    background: $color-bg-grey;
+    border-radius: $border-radius-medium;
+}
+
+::-webkit-scrollbar-thumb {
+    background: $color-primary;
+    border-radius: $border-radius-medium;
+    transition: background $transition-normal;
+    animation: fadeInScrollbar 0.3s ease;
+
+    &:hover {
+        background: $color-primary-dark;
+    }
+
+    &:active {
+        background: $color-primary-darker;
+    }
+}
+
+::-webkit-scrollbar-corner {
+    background: $color-bg-grey;
+}
+
+// Firefox
+* {
+    scrollbar-width: thin;
+    scrollbar-color: $color-primary $color-bg-grey;
+}
+
+// ===== COMPONENT SCROLLBARS =====
+.select-items {
+    scrollbar-width: thin;
+    scrollbar-color: $color-primary $color-bg-dark;
+
+    &::-webkit-scrollbar {
+        width: $scrollbar-size-small;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: $color-bg-dark;
+        border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: $color-primary;
+        border-radius: 3px;
+    }
+}
+
+.results-grid {
+    &::-webkit-scrollbar {
+        height: $scrollbar-size-small;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: $color-bg-grey;
+        border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: $color-primary;
+        border-radius: 3px;
+    }
+}
+
+.horizontal-scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: $color-primary $color-bg-grey;
+
+    &::-webkit-scrollbar {
+        height: $scrollbar-size-small;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: $color-bg-grey;
+        border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: $color-primary;
+        border-radius: 3px;
+    }
+}
+
+.modal-content {
+    &::-webkit-scrollbar {
+        width: $scrollbar-size-small;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: $color-bg-grey;
+        border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: $color-primary;
+        border-radius: 3px;
+    }
+}
+
+.sidebar {
+    &::-webkit-scrollbar {
+        width: $scrollbar-size-mobile;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: $color-primary;
+        border-radius: $border-radius-small;
+    }
+}
+
+.table-container {
+    overflow-x: auto;
+
+    &::-webkit-scrollbar {
+        height: $scrollbar-size-default;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: $color-bg-grey;
+        border-radius: $border-radius-medium;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: $color-primary;
+        border-radius: $border-radius-medium;
+    }
+}
+
+// ===== IMAGE COMPONENT =====
+.image-wrapper {
+    width: 100%;
+    aspect-ratio: 270 / 406;
+    overflow: hidden;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+}
+
+// ===== LOADER COMPONENT =====
+.loader-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity $transition-slow;
+
+    &.active {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+.loader {
+    width: $loader-width;
+    height: $loader-height;
+}
+
+.loader-film {
+    width: $loader-width;
+    height: $loader-height;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    div {
+        width: $loader-bar-width;
+        height: $loader-bar-height;
+        background: $color-primary;
+        animation: filmMove 1s infinite ease-in-out;
+
+        &:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        &:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        &:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+    }
+}
+
+// ===== TOP PROPERTIES COMPONENT =====
+.top_properties {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba($color-bg-dark, 0.71);
+    border-radius: 8px 0 8px 0;
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+
+    .rating {
+        color: $color-text-white;
+        border-radius: 15px 0;
+    }
+
+    .videoQuality {
+        margin-right: 5px;
+        color: $color-text-white;
+        border-radius: 8px;
+        z-index: 1;
+    }
+}
+
+// ===== ANIMATIONS =====
+@keyframes filmMove {
+
+    0%,
+    100% {
+        transform: scaleY(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scaleY(0.3);
+        opacity: 0.5;
+    }
+}
+
+@keyframes fadeInScrollbar {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+// ===== UTILITY CLASSES =====
+.dark-scroll {
+    scrollbar-color: $color-primary $color-bg-dark;
+
+    &::-webkit-scrollbar-track {
+        background: $color-bg-dark;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: $color-primary;
+    }
+}
+
+.gradient-scroll {
+    &::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, $color-primary, #ff8c00, #ff6b00);
+        border-radius: 6px;
+    }
+}
+
+.no-scroll {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, $color-primary, $color-primary-dark);
+    transform-origin: 0 50%;
+    transform: scaleX(0);
+    z-index: 1000;
+    transition: transform $transition-fast;
+}
+
+.properties_inne {
+    transition: 250ms;
+
+    &:hover {
+        transform: scale(0.92);
+    }
+}
+
+.slider-titles a{
+    transition: 250ms;
+
+    &:hover {
+        color: #ff6b00;
+    }
+}
+
+// ===== RESPONSIVE STYLES =====
+@media (max-width: $breakpoint-mobile) {
+    ::-webkit-scrollbar {
+        width: $scrollbar-size-mobile;
+        height: $scrollbar-size-mobile;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        border-radius: $border-radius-small;
+    }
+
+    .movie-container {
+        padding: $movie-container-padding-tablet;
+    }
+
+    .top_properties {
+        padding: $top-properties-padding-mobile;
+
+        .rating,
+        .videoQuality {
+            font-size: 0.75rem;
+        }
+    }
+
+    .loader {
+        width: 50px;
+        height: 40px;
+    }
+}
+
+@media (max-width: $breakpoint-small) {
+    .movie-container {
+        padding: $movie-container-padding-mobile;
+    }
+}

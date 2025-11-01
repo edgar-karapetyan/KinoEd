@@ -1,0 +1,151 @@
+$color_orange: #f36607;
+
+.swiper {
+    width: 100%;
+    height: 100%;
+    padding-bottom: 130px;
+    user-select: none;
+}
+
+.swiper-slide {
+    width: 50px;
+    text-align: center;
+    background: #444;
+    aspect-ratio: 270 / 406;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+    opacity: 0.7;
+    transition: 250ms;
+    color: $color_orange;
+
+    &:hover {
+        opacity: 1;
+    }
+}
+
+.swiper-pagination-bullet {
+    background: $color_orange;
+    opacity: 0.3;
+}
+
+.swiper-pagination-bullet-active {
+    opacity: 1;
+}
+
+.properties_inne {
+    position: absolute;
+    top: 0;
+    right: 4%;
+    width: 25px;
+    height: auto;
+    cursor: pointer;
+
+    img {
+        width: 100% !important;
+    }
+}
+
+// --------------------------
+.categories {
+    padding: 20px;
+
+    .swiper {
+        .swiper-button-prev {
+            top: 95% !important;
+            right: 155px !important;
+            left: inherit;
+        }
+
+        .swiper-button-next {
+            top: 95% !important;
+            right: 0 !important;
+            left: inherit;
+        }
+    }
+
+    .swiper-wrapper {
+        padding: 0px 0px 25px 0;
+    }
+
+    h2 {
+        margin-left: 8px;
+        color: white;
+    }
+
+    .swiper-slide {
+        position: relative;
+        transition: 250ms;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        border-radius: 8px;
+        transform: scale(0.98);
+
+        >img {
+            display: inline-block;
+            width: 45px;
+            height: 45px;
+            transition: 250ms;
+            cursor: pointer;
+        }
+
+        &:hover {
+            z-index: 5;
+            box-shadow: 0 0 5px 2px $color_orange;
+        }
+    }
+
+    .slide-item {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        align-items: center;
+        color: #ffffff;
+        transition: all 0.5s;
+        text-align: center;
+        padding: 20px;
+        border-radius: 8px;
+
+        a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .properties_inne {
+            width: 25px;
+        }
+
+        .slide-info {
+            pointer-events: none;
+            position: absolute;
+            font-weight: 400;
+            top: 101%;
+            padding: 2px;
+
+            h3 {
+                margin: 0;
+                color: white;
+            }
+
+            p {
+                margin: 5px 0 0 0;
+            }
+        }
+    }
+}
