@@ -1,16 +1,4 @@
 @charset "UTF-8";
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  background-color: #000;
-  color: #fff;
-  line-height: 1.6;
-}
-
 .movie-header {
   display: flex;
   margin-bottom: 30px;
@@ -69,6 +57,7 @@ body {
 .movie-description {
   line-height: 1.6;
   margin-bottom: 20px;
+  color: #fff;
 }
 
 .btn {
@@ -92,6 +81,7 @@ body {
 
 .detail-item {
   margin-bottom: 20px;
+  color: #fff;
 }
 
 .detail-label {

@@ -12,11 +12,12 @@ class SearchByGenrePage {
         this.totalItems = 0;
         this.pageSize = 30;
         this.genre = '';
+        this.type = '';
         this.contentTypes = [];
         this.genresList = [];
         this.cache = new Map();
         this.cacheTimeout = 5 * 60 * 1000;
-        this.sortBy = 'id';
+        this.sortBy = 'year'; // Изменено на сортировку по году
         this.yearFilter = '';
         this.isLoading = false;
 
@@ -26,20 +27,27 @@ class SearchByGenrePage {
     async init() {
         await this.loadContentTypes();
         await this.loadGenres();
-        this.getGenreFromURL();
+        this.getParamsFromURL();
         this.setupEventListeners();
         await this.loadContent(this.currentPage);
         this.setupKeyboardNavigation();
 
-        setTimeout(() => {
-            genloader_hide()
-        }, 200);
+        genloader_hide();
     }
 
-    getGenreFromURL() {
+    getParamsFromURL() {
         const urlParams = new URLSearchParams(window.location.search);
+
+        // Поддерживаем оба формата: genre и type
         this.genre = urlParams.get('genre') || '';
+        this.type = urlParams.get('type') || '';
         this.currentPage = parseInt(urlParams.get('page')) || 1;
+
+        console.log('🎯 ПАРАМЕТРЫ ИЗ URL:');
+        console.log('Genre:', this.genre);
+        console.log('Type:', this.type);
+        console.log('Страница:', this.currentPage);
+        console.log('================');
 
         this.updatePageTitle();
     }
@@ -48,46 +56,70 @@ class SearchByGenrePage {
         const titleElement = document.getElementById('genre-title');
         const descriptionElement = document.getElementById('genre-description');
 
-        const genreTitles = {
-            'action': 'Фильмы',
-            'series': 'Сериалы',
-            'new': 'Новинки ' + (currentYear - 1) + ' - ' + currentYear,
-            'top': 'Топ за 5 лет',
-            'movie': 'Фильмы'
-        };
+        if (!titleElement || !descriptionElement) return;
 
-        let genreTitle = genreTitles[this.genre];
-        let genreDescription = '';
+        let title = '';
+        let description = '';
 
-        if (!genreTitle) {
-            const foundGenre = this.genresList.find(g => g.slug === this.genre);
-            if (foundGenre) {
-                genreTitle = foundGenre.name;
-                genreDescription = `Фильмы и сериалы в жанре "${foundGenre.name}"`;
-            } else {
-                genreTitle = this.genre;
-                genreDescription = `Подборка контента: ${this.genre}`;
-            }
-        } else {
-            const descriptions = {
-                'action': 'Лучшие фильмы всех жанров',
-                'series': 'Популярные сериалы',
-                'new': 'Самые свежие фильмы и сериалы ' + (currentYear - 1) + '-' + currentYear + ' годов',
-                'top': 'Лучшие фильмы и сериалы с высоким рейтингом за последние 5 лет',
-                'movie': 'Фильмы всех жанров'
+        // Если есть параметр type (специальные категории)
+        if (this.type) {
+            const specialCategories = {
+                'action': {
+                    title: 'Фильмы',
+                    description: 'Лучшие фильмы всех жанров'
+                },
+                'series': {
+                    title: 'Сериалы',
+                    description: 'Популярные сериалы'
+                },
+                'new': {
+                    title: `Новинки ${currentYear - 1}-${currentYear}`,
+                    description: `Самые свежие фильмы и сериалы ${currentYear - 1}-${currentYear} годов`
+                },
+                'top': {
+                    title: 'Топ за 5 лет',
+                    description: 'Лучшие фильмы и сериалы с высоким рейтингом за последние 5 лет'
+                },
+                'movie': {
+                    title: 'Фильмы',
+                    description: 'Фильмы всех жанров'
+                }
             };
-            genreDescription = descriptions[this.genre] || `Подборка контента: ${genreTitle}`;
+
+            const specialCategory = specialCategories[this.type];
+            if (specialCategory) {
+                title = specialCategory.title;
+                description = specialCategory.description;
+            } else {
+                title = this.type;
+                description = `Подборка контента: ${this.type}`;
+            }
+        }
+        // Если есть параметр genre (обычные жанры)
+        else if (this.genre) {
+            // Пробуем найти жанр по ID
+            const foundGenreById = this.genresList.find(g => g.id.toString() === this.genre);
+
+            // Если не нашли по ID, ищем по slug
+            const foundGenre = foundGenreById || this.genresList.find(g => g.slug === this.genre);
+
+            if (foundGenre) {
+                title = foundGenre.name;
+                description = `Фильмы и сериалы в жанре "${foundGenre.name}"`;
+            } else {
+                title = this.genre;
+                description = `Подборка контента: ${this.genre}`;
+            }
+        }
+        // Если нет параметров
+        else {
+            title = 'Все фильмы и сериалы';
+            description = 'Полная коллекция фильмов и сериалов';
         }
 
-        if (titleElement) {
-            titleElement.textContent = genreTitle;
-        }
-
-        if (descriptionElement) {
-            descriptionElement.textContent = genreDescription;
-        }
-
-        document.title = `${genreTitle} - VeoVeo`;
+        titleElement.textContent = title;
+        descriptionElement.textContent = description;
+        document.title = `${title} - VeoVeo`;
     }
 
     async getCachedData(key, fetchFunction) {
@@ -107,20 +139,22 @@ class SearchByGenrePage {
     async loadContentTypes() {
         try {
             this.contentTypes = await this.getCachedData('contentTypes', async () => {
-                const response = await this.fetchWithRetry(`${API.BASE}/v1/filters/content-types`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${API.KEY}`
-                    }
-                });
-
+                const response = await this.fetchWithRetry(`${API.BASE}/v1/filters/content-types`);
                 if (response.ok) {
-                    return await response.json();
-                } else {
-                    console.error('Ошибка загрузки типов контента:', response.status);
-                    return [];
+                    const contentTypes = await response.json();
+
+                    console.log('🎬 ВСЕ ТИПЫ КОНТЕНТА:');
+                    console.table(contentTypes.map(type => ({
+                        'ID': type.id,
+                        'Название': type.name,
+                        'Slug': type.slug,
+                        'Для URL': `searchBy.html?type=${type.slug}`
+                    })));
+                    console.log('================');
+
+                    return contentTypes;
                 }
+                return [];
             });
         } catch (error) {
             console.error('Ошибка загрузки типов контента:', error);
@@ -131,20 +165,35 @@ class SearchByGenrePage {
     async loadGenres() {
         try {
             this.genresList = await this.getCachedData('genres', async () => {
-                const response = await this.fetchWithRetry(`${API.BASE}/v1/filters/genres`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${API.KEY}`
-                    }
-                });
-
+                const response = await this.fetchWithRetry(`${API.BASE}/v1/filters/genres`);
                 if (response.ok) {
-                    return await response.json();
-                } else {
-                    console.error('Ошибка загрузки жанров:', response.status);
-                    return [];
+                    const genres = await response.json();
+
+                    // Выводим все жанры в удобном формате
+                    console.log('🎭 ВСЕ ДОСТУПНЫЕ ЖАНРЫ ИЗ API:');
+                    console.table(genres.map(genre => ({
+                        'ID': genre.id,
+                        'Название': genre.name,
+                        'Slug': genre.slug,
+                        'Для URL по ID': `searchBy.html?genre=${genre.id}`,
+                        'Для URL по Slug': `searchBy.html?genre=${genre.slug}`
+                    })));
+
+                    // Также выводим списки для копирования
+                    console.log('📋 СПИСОК ЖАНРОВ ДЛЯ HTML (по ID):');
+                    genres.forEach(genre => {
+                        console.log(`<a href="searchBy.html?genre=${genre.id}" class="genre-link">${genre.name}</a>`);
+                    });
+
+                    console.log('📋 СПИСОК ЖАНРОВ ДЛЯ HTML (по Slug):');
+                    genres.forEach(genre => {
+                        console.log(`<a href="searchBy.html?genre=${genre.slug}" class="genre-link">${genre.name}</a>`);
+                    });
+                    console.log('================');
+
+                    return genres;
                 }
+                return [];
             });
         } catch (error) {
             console.error('Ошибка загрузки жанров:', error);
@@ -152,24 +201,30 @@ class SearchByGenrePage {
         }
     }
 
-    async fetchWithRetry(url, options, retries = 3) {
+    async fetchWithRetry(url, options = {}, retries = 3) {
+        const defaultOptions = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${API.KEY}`
+            }
+        };
+
+        const finalOptions = { ...defaultOptions, ...options };
+
         for (let i = 0; i < retries; i++) {
             try {
-                const response = await fetch(url, options);
+                const response = await fetch(url, finalOptions);
                 if (response.ok) return response;
 
                 if (response.status >= 500) {
-                    await new Promise(resolve =>
-                        setTimeout(resolve, 1000 * Math.pow(2, i))
-                    );
+                    await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, i)));
                     continue;
                 }
                 throw new Error(`HTTP ${response.status}`);
             } catch (error) {
                 if (i === retries - 1) throw error;
-                await new Promise(resolve =>
-                    setTimeout(resolve, 1000 * Math.pow(2, i))
-                );
+                await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, i)));
             }
         }
     }
@@ -190,80 +245,123 @@ class SearchByGenrePage {
         return type ? type.id : null;
     }
 
-    getGenreId(genreSlug) {
-        const genre = this.genresList.find(g => g.slug === genreSlug);
-        return genre ? genre.id : null;
+    getGenreId(genreParam) {
+        // Пробуем найти по ID (если genreParam - число)
+        if (!isNaN(genreParam)) {
+            const genreById = this.genresList.find(g => g.id.toString() === genreParam);
+            if (genreById) {
+                console.log(`🔍 Поиск жанра по ID "${genreParam}": ✅ Найден (${genreById.name})`);
+                return genreById.id;
+            }
+        }
+
+        // Ищем по slug
+        const genreBySlug = this.genresList.find(g => g.slug === genreParam);
+        if (genreBySlug) {
+            console.log(`🔍 Поиск жанра по Slug "${genreParam}": ✅ Найден (ID: ${genreBySlug.id})`);
+            return genreBySlug.id;
+        }
+
+        console.log(`❌ Жанр не найден: "${genreParam}"`);
+        return null;
     }
 
     buildRequestBody() {
+        // Всегда сортируем по году (новые сначала)
         const requestBody = {
             pagination: {
                 page: this.currentPage,
                 pageSize: this.pageSize,
                 type: "page",
-                order: "DESC",
-                sortBy: this.sortBy
+                order: "DESC",  // DESC = от новых к старым
+                sortBy: "year"  // Сортировка по году выпуска
             }
         };
 
-        const predefinedGenres = ['action', 'series', 'new', 'top', 'movie'];
+        console.log('🎯 ПОИСК ПО ПАРАМЕТРАМ:');
+        console.log('Type:', this.type);
+        console.log('Genre:', this.genre);
+        console.log('📅 СОРТИРОВКА: по году (новые сначала)');
 
-        if (predefinedGenres.includes(this.genre)) {
-            switch (this.genre) {
-                case 'action':
+        // Если есть параметр type (специальные категории)
+        if (this.type) {
+            const specialCategories = {
+                'action': () => {
                     const movieTypeId = this.getContentTypeId('movie');
                     if (movieTypeId) {
                         requestBody.contentTypeId = [movieTypeId];
+                        console.log('📁 Категория: Фильмы');
                     }
-                    break;
-
-                case 'series':
+                },
+                'series': () => {
                     const seriesTypeId = this.getContentTypeId('series');
                     if (seriesTypeId) {
                         requestBody.contentTypeId = [seriesTypeId];
+                        console.log('📁 Категория: Сериалы');
                     }
-                    break;
-
-                case 'new':
+                },
+                'new': () => {
                     requestBody.year = [currentYear - 1, currentYear];
-                    break;
-
-                case 'top':
+                    console.log('📁 Категория: Новинки');
+                },
+                'top': () => {
                     const startYear = currentYear - 5;
                     const years = [];
                     for (let year = startYear; year <= currentYear; year++) {
                         years.push(year);
                     }
                     requestBody.year = years;
-                    requestBody.kinopoiskRating = {
-                        from: 7.0
-                    };
-                    break;
+                    requestBody.kinopoiskRating = { from: 7.0 };
+                    console.log('📁 Категория: Топ');
 
-                case 'movie':
-                    const movieTypeId2 = this.getContentTypeId('movie');
-                    if (movieTypeId2) {
-                        requestBody.contentTypeId = [movieTypeId2];
+                    // Для топа дополнительно сортируем по рейтингу на клиенте
+                    // Основная сортировка по году останется от API
+                },
+                'movie': () => {
+                    const movieTypeId = this.getContentTypeId('movie');
+                    if (movieTypeId) {
+                        requestBody.contentTypeId = [movieTypeId];
+                        console.log('📁 Категория: Фильмы');
                     }
-                    break;
+                }
+            };
+
+            if (specialCategories[this.type]) {
+                specialCategories[this.type]();
+            } else {
+                console.log('❌ Неизвестная категория:', this.type);
             }
-        } else {
+        }
+        // Если есть параметр genre (обычные жанры)
+        else if (this.genre) {
             const genreId = this.getGenreId(this.genre);
             if (genreId) {
                 requestBody.genreId = [genreId];
+                console.log('✅ Используем genreId:', genreId);
+            } else {
+                console.log('❌ Жанр не найден в API!');
             }
         }
+        // Если нет параметров - показываем всё
+        else {
+            console.log('📁 Показываем все фильмы и сериалы');
+        }
 
+        // Дополнительный фильтр по году
         if (this.yearFilter) {
             requestBody.year = [parseInt(this.yearFilter)];
         }
 
+        // Очищаем пустые поля
         Object.keys(requestBody).forEach(key => {
             if (requestBody[key] === undefined ||
                 (Array.isArray(requestBody[key]) && requestBody[key].length === 0)) {
                 delete requestBody[key];
             }
         });
+
+        console.log('📦 Итоговый запрос к API:', requestBody);
+        console.log('================');
         return requestBody;
     }
 
@@ -273,7 +371,7 @@ class SearchByGenrePage {
         const pagination = document.getElementById('pagination');
 
         if (loading) {
-            grid.innerHTML = this.createSkeletonLoader();
+            if (grid) grid.innerHTML = this.createSkeletonLoader();
             if (pagination) {
                 pagination.style.opacity = '0.5';
                 pagination.style.pointerEvents = 'none';
@@ -295,7 +393,6 @@ class SearchByGenrePage {
                         <div class="info-skeleton">
                             <div class="title-skeleton"></div>
                             <div class="meta-skeleton"></div>
-                            <div class="description-skeleton"></div>
                         </div>
                     </div>
                 `).join('')}
@@ -313,36 +410,50 @@ class SearchByGenrePage {
             const requestBody = this.buildRequestBody();
             const response = await this.fetchWithRetry(`${API.BASE}/v1/contents`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${API.KEY}`
-                },
                 body: JSON.stringify(requestBody)
             });
 
             if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
 
             const data = await response.json();
 
-            if (this.genre === 'top' && data.data) {
-                data.data.sort((a, b) => {
+            // Выводим информацию о найденных фильмах
+            console.log('🎬 НАЙДЕННЫЕ ФИЛЬМЫ:');
+            console.log(`Всего найдено: ${data.meta?.total || 0}`);
+            console.log(`Страница: ${data.meta?.page || 1} из ${data.meta?.pages || 1}`);
+
+            if (data.data && data.data.length > 0) {
+                console.table(data.data.map(movie => ({
+                    'ID': movie.id,
+                    'Название': movie.title,
+                    'Оригинал': movie.originalTitle,
+                    'Год': movie.year,
+                    'Рейтинг': movie.ratings?.kinopoisk?.rating || '-',
+                    'Тип': movie.episodesCount > 1 ? 'Сериал' : 'Фильм',
+                    'Жанры': movie.genres?.map(g => g.name).join(', ') || '-'
+                })));
+            }
+            console.log('================');
+
+            // Для топа дополнительно сортируем по рейтингу
+            let sortedData = data.data || [];
+            if (this.type === 'top') {
+                sortedData = sortedData.sort((a, b) => {
                     const ratingA = a.ratings?.kinopoisk?.rating || 0;
                     const ratingB = b.ratings?.kinopoisk?.rating || 0;
                     return ratingB - ratingA;
                 });
             }
 
-            this.displayContent(data.data || []);
+            this.displayContent(sortedData);
             this.updatePagination(data.meta || {});
             this.updateResultsInfo(data.meta || {});
-            this.trackPageView();
 
         } catch (error) {
-            console.error('Полная ошибка загрузки контента:', error);
-            grid.innerHTML = this.getErrorHTML(error);
+            console.error('❌ Ошибка загрузки контента:', error);
+            if (grid) grid.innerHTML = this.getErrorHTML(error);
         } finally {
             this.setLoadingState(false);
         }
@@ -350,50 +461,44 @@ class SearchByGenrePage {
 
     displayContent(content) {
         const grid = document.getElementById('movies-grid');
+        if (!grid) return;
 
         if (!content || content.length === 0) {
             grid.innerHTML = this.getNoResultsHTML();
             return;
         }
 
-        const isTop100 = this.genre === 'top';
-        grid.innerHTML = content.map((item, index) => this.createMovieCard(item, index, isTop100)).join('');
-
+        grid.innerHTML = content.map((item, index) => this.createMovieCard(item, index)).join('');
         this.setupLazyLoading();
     }
 
-    createMovieCard(item, index, isTop100 = false) {
+    createMovieCard(item, index) {
         const rating = item.ratings?.kinopoisk?.rating;
-        const votes = item.ratings?.kinopoisk?.votes;
-        const contentType = (item.episodesCount > 1) ? 'Сериал' : 'Фильм';
-        const globalIndex = index + ((this.currentPage - 1) * this.pageSize);
+        const contentType = (item.episodesCount > 1 || item.seasonsCount > 1) ? 'Сериал' : 'Фильм';
+        const posterUrl = item.posterUrl
 
         return `
         <a href="movie.html?id=v${item.id}&${this.slugify(item.originalTitle || item.title)}" 
            class="movie-card"
-           aria-label="${this.escapeHtml(item.title || 'Без названия')} - ${item.year || 'Не указан'}"
-           onclick="searchByGenrePage.trackContentInteraction('click', '${this.escapeHtml(item.title)}')">
-            ${item.posterUrl ?
-                `<div class='image-wrapper'>
-                    <img src="${item.posterUrl}" 
-                         alt="${this.escapeHtml(item.title || 'Без названия')}" 
-                         class="movie-poster lazy"
-                         loading="lazy"
-                         onerror="this.src='./assets/img/kinoed.png'">
-                </div>` : ''
-            }
-            <div class="movie-poster-placeholder" style="${item.posterUrl ? 'display: none;' : ''}">
-                ${this.escapeHtml(item.title || 'Без названия')}
+           aria-label="${this.escapeHtml(item.title || 'Без названия')}">
+            <div class='image-wrapper'>
+                <img src="${posterUrl}" 
+                    alt="${this.escapeHtml(item.title || 'Без названия')}" 
+                    style=" ${posterUrl}"
+                    class="movie-poster lazy"
+                    loading="lazy"
+                    onerror="assets/img/default.jpg">
             </div>
+
             <div class="movie-info">
                 <h3 class="movie-title">${this.escapeHtml(item.title || 'Без названия')}</h3>
                 <div class="movie-meta">
                     <span class="movie-year">${item.year || ''}</span>
-
-                    ${rating && rating >= 1 ? `<span class="movie-rating ${(rating < 7) ? 'yellow' : 'green'}">
-                        ★ ${rating.toFixed(1)}
-                    </span>` : ''
-            }
+                    ${rating && rating >= 1 ? `
+                        <span class="movie-rating ${(rating < 7) ? 'yellow' : 'green'}">
+                            ★ ${rating.toFixed(1)}
+                        </span>
+                    ` : ''}
                 </div>
                 <span class="movie-type">${this.escapeHtml(contentType)}</span>
             </div>
@@ -403,7 +508,6 @@ class SearchByGenrePage {
 
     setupLazyLoading() {
         const lazyImages = document.querySelectorAll('img.lazy');
-
         const imageObserver = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -418,21 +522,13 @@ class SearchByGenrePage {
         lazyImages.forEach(img => imageObserver.observe(img));
     }
 
-    formatVotes(votes) {
-        if (votes >= 1000000) {
-            return (votes / 1000000).toFixed(1) + 'M';
-        } else if (votes >= 1000) {
-            return (votes / 1000).toFixed(1) + 'K';
-        }
-        return votes;
-    }
-
     updatePagination(meta) {
         this.currentPage = meta.page || 1;
         this.totalPages = meta.pages || 1;
         this.totalItems = meta.total || 0;
 
         const pagination = document.getElementById('pagination');
+        if (!pagination) return;
 
         if (this.totalPages <= 1) {
             pagination.innerHTML = '';
@@ -441,36 +537,42 @@ class SearchByGenrePage {
 
         let paginationHTML = '';
 
+        // Кнопка "Назад"
         if (this.currentPage > 1) {
-            paginationHTML += `<button class="pagination-btn" onclick="searchByGenrePage.goToPage(${this.currentPage - 1})" aria-label="Предыдущая страница">«</button>`;
+            paginationHTML += `<button class="pagination-btn" onclick="searchByGenrePage.goToPage(${this.currentPage - 1})">«</button>`;
         } else {
             paginationHTML += `<button class="pagination-btn disabled" disabled>«</button>`;
         }
 
-        if (this.currentPage > 3) {
+        // Номера страниц
+        const startPage = Math.max(1, this.currentPage - 2);
+        const endPage = Math.min(this.totalPages, this.currentPage + 2);
+
+        if (startPage > 1) {
             paginationHTML += `<button class="pagination-btn" onclick="searchByGenrePage.goToPage(1)">1</button>`;
-            if (this.currentPage > 4) {
+            if (startPage > 2) {
                 paginationHTML += `<span class="pagination-ellipsis">...</span>`;
             }
         }
 
-        for (let i = Math.max(1, this.currentPage - 2); i <= Math.min(this.totalPages, this.currentPage + 2); i++) {
+        for (let i = startPage; i <= endPage; i++) {
             if (i === this.currentPage) {
-                paginationHTML += `<button class="pagination-btn active" aria-current="page">${i}</button>`;
+                paginationHTML += `<button class="pagination-btn active">${i}</button>`;
             } else {
                 paginationHTML += `<button class="pagination-btn" onclick="searchByGenrePage.goToPage(${i})">${i}</button>`;
             }
         }
 
-        if (this.currentPage < this.totalPages - 2) {
-            if (this.currentPage < this.totalPages - 3) {
+        if (endPage < this.totalPages) {
+            if (endPage < this.totalPages - 1) {
                 paginationHTML += `<span class="pagination-ellipsis">...</span>`;
             }
             paginationHTML += `<button class="pagination-btn" onclick="searchByGenrePage.goToPage(${this.totalPages})">${this.totalPages}</button>`;
         }
 
+        // Кнопка "Вперед"
         if (this.currentPage < this.totalPages) {
-            paginationHTML += `<button class="pagination-btn" onclick="searchByGenrePage.goToPage(${this.currentPage + 1})" aria-label="Следующая страница">»</button>`;
+            paginationHTML += `<button class="pagination-btn" onclick="searchByGenrePage.goToPage(${this.currentPage + 1})">»</button>`;
         } else {
             paginationHTML += `<button class="pagination-btn disabled" disabled>»</button>`;
         }
@@ -492,26 +594,8 @@ class SearchByGenrePage {
             resultsCount.textContent = total > 0 ? `Показано ${start}-${end} из ${total} позиций` : 'Ничего не найдено';
         }
 
-        if (descriptionElement) {
-            const predefinedGenres = ['action', 'series', 'new', 'top', 'movie'];
-
-            if (predefinedGenres.includes(this.genre)) {
-                const descriptions = {
-                    'action': `Лучшие фильмы всех жанров. Найдено: ${total}`,
-                    'series': `Популярные сериалы. Найдено: ${total}`,
-                    'new': `Самые свежие фильмы и сериалы ${currentYear - 1}-${currentYear} годов. Найдено: ${total}`,
-                    'top': `Лучшие фильмы и сериалы с высоким рейтингом за последние 5 лет. Найдено: ${total}`,
-                    'movie': `Фильмы всех жанров. Найдено: ${total}`
-                };
-                descriptionElement.textContent = descriptions[this.genre];
-            } else {
-                const foundGenre = this.genresList.find(g => g.slug === this.genre);
-                if (foundGenre) {
-                    descriptionElement.textContent = `Фильмы и сериалы в жанре "${foundGenre.name}". Найдено: ${total}`;
-                } else {
-                    descriptionElement.textContent = `Подборка контента. Найдено: ${total}`;
-                }
-            }
+        if (descriptionElement && total > 0) {
+            descriptionElement.textContent += `. Найдено: ${total}`;
         }
     }
 
@@ -523,51 +607,36 @@ class SearchByGenrePage {
 
         window.scrollTo({ top: 0, behavior: 'smooth' });
 
+        // Обновляем URL с сохранением текущих параметров
         const url = new URL(window.location);
         url.searchParams.set('page', page);
         window.history.pushState({}, '', url);
-
-        this.trackPageView();
     }
 
     setupEventListeners() {
         window.addEventListener('popstate', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const page = parseInt(urlParams.get('page')) || 1;
-            const genre = urlParams.get('genre') || '';
-
-            if (genre !== this.genre) {
-                this.genre = genre;
-                this.currentPage = 1;
-                this.updatePageTitle();
-                this.loadContent(1);
-            } else if (page !== this.currentPage) {
-                this.currentPage = page;
-                this.loadContent(page);
-            }
+            this.getParamsFromURL();
+            this.loadContent(this.currentPage);
         });
 
-        this.setupFilters();
-    }
-
-    setupFilters() {
+        // Фильтры
         const sortSelect = document.getElementById('sort-select');
         const yearFilter = document.getElementById('year-filter');
 
         if (sortSelect) {
-            sortSelect.addEventListener('change', this.debounce((e) => {
+            sortSelect.addEventListener('change', (e) => {
                 this.sortBy = e.target.value;
                 this.currentPage = 1;
                 this.loadContent(1);
-            }, 300));
+            });
         }
 
         if (yearFilter) {
-            yearFilter.addEventListener('change', this.debounce((e) => {
+            yearFilter.addEventListener('change', (e) => {
                 this.yearFilter = e.target.value;
                 this.currentPage = 1;
                 this.loadContent(1);
-            }, 300));
+            });
         }
     }
 
@@ -581,36 +650,6 @@ class SearchByGenrePage {
                 this.goToPage(this.currentPage - 1);
             }
         });
-    }
-
-    debounce(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
-    }
-
-    trackPageView() {
-        if (typeof gtag !== 'undefined') {
-            gtag('config', 'GA_MEASUREMENT_ID', {
-                page_title: document.title,
-                page_location: window.location.href
-            });
-        }
-    }
-
-    trackContentInteraction(action, label) {
-        if (typeof gtag !== 'undefined') {
-            gtag('event', action, {
-                event_category: 'content',
-                event_label: label
-            });
-        }
     }
 
     getNoResultsHTML() {
@@ -628,10 +667,7 @@ class SearchByGenrePage {
             <div class="no-results">
                 Ошибка загрузки контента: ${error.message}
                 <br><br>
-                <p style="font-size: 14px; margin-top: 10px;">
-                    Проверьте консоль для подробной информации
-                </p>
-                <a href="index.html" style="color: #f36607; margin-top: 15px; display: inline-block;">Вернуться на главную</a>
+                <a href="index.html" style="color: #f36607;">Вернуться на главную</a>
             </div>
         `;
     }
@@ -658,4 +694,5 @@ class SearchByGenrePage {
     }
 }
 
+// Создаем глобальный экземпляр
 const searchByGenrePage = new SearchByGenrePage();

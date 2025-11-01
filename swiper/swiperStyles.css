@@ -10,11 +10,15 @@
 .swiper-slide {
   width: 50px;
   text-align: center;
-  background: #444;
+  background: #000000;
   aspect-ratio: 270/406;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.swiper-slide a {
+  background-size: cover;
+  background-position: center;
 }
 
 .swiper-slide img {

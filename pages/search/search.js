@@ -18,22 +18,31 @@ function showFilters_loader() {
 
     document.querySelector('.filters_loader').appendChild(loader);
 
-    setTimeout(() => {
-        if (loader) {
-            loader.classList.add('active');
+    let t = performance.now();
+    (function loop(now) {
+        if (now - t >= 10) {
+            if (loader) {
+                loader.classList.add('active');
+            }
         }
-    }, 10);
+        else requestAnimationFrame(loop);
+    })(t);
 }
 
 function hideFilters_loader() {
     if (loader) {
         loader.classList.remove('active');
-        setTimeout(() => {
-            if (loader && loader.parentNode) {
-                loader.parentNode.removeChild(loader);
+
+        let t = performance.now();
+        (function loop(now) {
+            if (now - t >= 400) {
+                if (loader && loader.parentNode) {
+                    loader.parentNode.removeChild(loader);
+                }
+                loader = null;
             }
-            loader = null;
-        }, 400);
+            else requestAnimationFrame(loop);
+        })(t);
     }
 }
 
@@ -103,9 +112,8 @@ document.addEventListener('DOMContentLoaded', function () {
             // Загружаем фильмы с сохраненными фильтрами
             if (hasActiveFilters() && !isFirstLoad) {
                 filterMovies();
-                setTimeout(() => {
-                    genloader_hide()
-                }, 200);
+                genloader_hide()
+
             } else {
                 loadInitialMovies();
                 isFirstLoad = false;
@@ -246,7 +254,7 @@ function applySelectValue(selectId, value) {
 
     if (value) {
         targetOption = Array.from(options).find(option =>
-            option.dataset.value === value
+            option.dataset.value === value,
         );
     }
 
@@ -769,7 +777,7 @@ function displayMovies(moviesArray) {
 
         movieCard.innerHTML = `
             <div class='image-wrapper'>
-                <img src="${movie.poster}" alt="${movie.originalTitle}" title="${movie.title}" class="movie-poster" onerror="this.src='./assets/img/kinoed.png'" loading="lazy">
+                <img src="${movie.poster}" alt="${movie.originalTitle}" title="${movie.title}" class="movie-poster" loading="lazy">
             </div>
             <div class="movie-info">
                 <h3 class="movie-title">${movie.title.replace(":", "<br>") ? movie.title.replace(":", "<br>") : movie.originalTitle.replace(":", "<br>")}</h3>
@@ -1044,7 +1052,7 @@ window.addEventListener('error', function (e) {
 });
 
 
-// ---------------------------------------------------------------------------------------
+// -------------------------------------------
 const btn = document.getElementById('filters_top_btn')
 const filters = document.getElementById('filters')
 let checked = false
@@ -1067,9 +1075,10 @@ btn.addEventListener('click', () => {
         checked = true
         localStorage.setItem('checked', checked)
     }
-
 })
 
-setTimeout(() => {
-    genloader_hide()
-}, 2000);
+let t = performance.now();
+(function loop(now) {
+    if (now - t >= 2000) genloader_hide();
+    else requestAnimationFrame(loop);
+})(t);
