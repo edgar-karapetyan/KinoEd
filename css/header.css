@@ -507,4 +507,10 @@ header .login:hover {
   header .center ul a li {
     padding: 12px 15px;
   }
+  .topslider {
+    margin-bottom: 0;
+  }
+  .topslider .swiper {
+    padding-bottom: 90px;
+  }
 }

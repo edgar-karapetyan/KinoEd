@@ -104,4 +104,19 @@ $color_orange: #f36607;
             display: none;
         }
     }
+
+    @media screen and (max-width:450px) {
+        .swiper {
+            .swiper-button-prev {
+                top: 92% !important;
+                transform: scale(.90);
+                right: 15% !important;
+            }
+
+            .swiper-button-next {
+                top: 92% !important;
+                transform: scale(.90);
+            }
+        }
+    }
 }

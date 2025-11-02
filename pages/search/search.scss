@@ -31,7 +31,7 @@ p {
     img {
         position: absolute;
         width: 25px;
-        top: 13px;
+        top: 11px;
         left: 10px;
     }
 }
@@ -468,7 +468,7 @@ p {
 }
 
 // ------------------------------
-@media (max-width: 768px) {
+@media (max-width: 800px) {
     .filters-container {
         flex-direction: column;
         gap: 0;
@@ -485,7 +485,7 @@ p {
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 500px) {
     .results-grid {
         grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
     }
@@ -494,7 +494,27 @@ p {
         padding: 15px;
     }
 
+    .search-box {
+        img {
+            top: 8px;
+        }
+    }
+
     .search-input {
         padding: 12px 0 12px 35px;
+    }
+
+    .movie-info {
+        h4 {
+            font-size: 11px;
+        }
+
+        span {
+            font-size: 11px;
+        }
+    }
+
+    .movie-meta {
+        font-size: 11px;
     }
 }

@@ -88,3 +88,14 @@
     display: none;
   }
 }
+@media screen and (max-width: 450px) {
+  .topslider .swiper .swiper-button-prev {
+    top: 92% !important;
+    transform: scale(0.9);
+    right: 15% !important;
+  }
+  .topslider .swiper .swiper-button-next {
+    top: 92% !important;
+    transform: scale(0.9);
+  }
+}

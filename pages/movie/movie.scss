@@ -89,8 +89,12 @@ $background-color_7: rgba(255, 255, 255, 0.3);
 }
 
 .detail-item {
-	margin-bottom: 20px;
+	margin-bottom: 0;
 	color: $color_white;
+
+	.end {
+		font-weight: 400;
+	}
 }
 
 .detail-label {
@@ -427,6 +431,9 @@ textarea {
 	border: 1px solid rgba(255, 255, 255, 0.1);
 	animation: commentAppear 0.4s ease;
 }
+.footer__about{
+	max-width: 300px;
+}
 
 @keyframes commentAppear {
 	0% {
@@ -502,35 +509,6 @@ textarea {
 }
 
 /* Адаптивность для мобильных устройств */
-@media (max-width: 768px) {
-
-
-	.comment-header {
-		flex-direction: column;
-		gap: 5px;
-	}
-
-	.comment-actions {
-		justify-content: flex-start;
-	}
-}
-
-@media (max-width: 480px) {
-	body {
-		padding: 10px;
-	}
-
-	.film-comments-container {
-		padding: 15px;
-	}
-
-	.rating {
-		flex-direction: column;
-		align-items: flex-start;
-		gap: 8px;
-	}
-}
-
 @media (max-width: 800px) {
 	.movie-header {
 		flex-direction: column;
@@ -553,5 +531,33 @@ textarea {
 
 	.similar-list {
 		justify-content: center;
+	}
+}
+
+@media (max-width: 768px) {
+	.comment-header {
+		flex-direction: column;
+		gap: 5px;
+	}
+
+	.comment-actions {
+		justify-content: flex-start;
+	}
+}
+
+@media (max-width: 500px) {
+	.all-details {
+		margin: 0;
+		padding-top: 0;
+	}
+
+	.film-comments-container {
+		padding: 15px;
+	}
+
+	.rating {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 8px;
 	}
 }

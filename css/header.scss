@@ -46,6 +46,7 @@ $movie-container-padding-mobile: 60px 10px;
 
 $top-properties-padding: 5px 10px;
 $top-properties-padding-mobile: 3px 8px;
+
 // ===== HEADER STYLES =====
 header {
     padding: 10px;
@@ -487,7 +488,7 @@ header {
     }
 }
 
-@media (max-width: $breakpoint-small) {
+@media (max-width: 480px) {
     .burger {
         width: 80%;
         right: -100%;
@@ -509,6 +510,14 @@ header {
 
         .center ul a li {
             padding: 12px 15px;
+        }
+    }
+
+    .topslider {
+        margin-bottom: 0;
+
+        .swiper {
+            padding-bottom: 90px;
         }
     }
 }

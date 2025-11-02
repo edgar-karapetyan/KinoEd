@@ -777,10 +777,10 @@ function displayMovies(moviesArray) {
 
         movieCard.innerHTML = `
             <div class='image-wrapper'>
-                <img src="${movie.poster}" alt="${movie.originalTitle}" title="${movie.title}" class="movie-poster" loading="lazy">
+                <img src="${movie.poster}" alt="${movie.originalTitle}" title="${movie.title}" class="movie-poster" loading="lazy" onerror="assets/img/default.jpg">>
             </div>
             <div class="movie-info">
-                <h3 class="movie-title">${movie.title.replace(":", "<br>") ? movie.title.replace(":", "<br>") : movie.originalTitle.replace(":", "<br>")}</h3>
+                <h4 class="movie-title">${movie.title.replace(":", "<br>") ? movie.title.replace(":", "<br>") : movie.originalTitle.replace(":", "<br>")}</h4>
 
                 <div class="movie-meta">
                     <span class="movie-meta-year">${movie.year}</span>

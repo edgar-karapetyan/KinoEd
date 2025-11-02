@@ -475,23 +475,22 @@ class SearchByGenrePage {
     createMovieCard(item, index) {
         const rating = item.ratings?.kinopoisk?.rating;
         const contentType = (item.episodesCount > 1 || item.seasonsCount > 1) ? 'Сериал' : 'Фильм';
-        const posterUrl = item.posterUrl
+        const posterUrl = item.posterUrl || false
 
         return `
         <a href="movie.html?id=v${item.id}&${this.slugify(item.originalTitle || item.title)}" 
            class="movie-card"
            aria-label="${this.escapeHtml(item.title || 'Без названия')}">
             <div class='image-wrapper'>
-                <img src="${posterUrl}" 
-                    alt="${this.escapeHtml(item.title || 'Без названия')}" 
-                    style=" ${posterUrl}"
+                <img src="${posterUrl || 'assets/img/default.jpg'}" 
+                    title="${this.escapeHtml(item.title || 'Без названия')}"
                     class="movie-poster lazy"
                     loading="lazy"
                     onerror="assets/img/default.jpg">
             </div>
 
             <div class="movie-info">
-                <h3 class="movie-title">${this.escapeHtml(item.title || 'Без названия')}</h3>
+                <h4 class="movie-title">${this.escapeHtml(item.title || 'Без названия')}</h4>
                 <div class="movie-meta">
                     <span class="movie-year">${item.year || ''}</span>
                     ${rating && rating >= 1 ? `

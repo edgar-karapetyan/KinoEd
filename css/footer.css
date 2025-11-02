@@ -1,8 +1,8 @@
 .footer {
-  background-color: #121212;
   color: #ccc;
   padding: 50px 0 20px;
   margin-top: 30px;
+  border-top: 1px solid #f36607;
 }
 .footer .container {
   max-width: 1200px;
@@ -49,6 +49,13 @@
   text-align: center;
   padding-top: 15px;
   color: #777;
+}
+.footer .footer-flex {
+  display: flex;
+  flex-wrap: wrap;
+}
+.footer .footer-flex div {
+  width: 49%;
 }
 
 @media screen and (max-width: 600px) {

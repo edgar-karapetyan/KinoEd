@@ -5,10 +5,10 @@ $color_white: #ffffff;
 $color_orange: #f36607;
 
 .footer {
-    background-color: #121212;
     color: #ccc;
     padding: 50px 0 20px;
     margin-top: 30px;
+    border-top: 1px solid #f36607;
 
     .container {
         max-width: 1200px;
@@ -64,6 +64,14 @@ $color_orange: #f36607;
         text-align: center;
         padding-top: 15px;
         color: #777;
+    }
+    .footer-flex{
+        display: flex;
+        flex-wrap: wrap;
+
+        div{
+            width: 49%;
+        }
     }
 }
 
