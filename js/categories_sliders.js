@@ -201,7 +201,7 @@ async function createSlider(config) {
         breakpoints: {
             0: { slidesPerView: 3, },
             768: { slidesPerView: 4, },
-            1024: { slidesPerView: 6, },
+            1024: { slidesPerView: 10, },
         },
         on: {
             // Загружаем когда пользователь дошел до середины

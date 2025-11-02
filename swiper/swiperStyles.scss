@@ -5,7 +5,6 @@ $color_orange: #f36607;
     height: 100%;
     padding-bottom: 130px;
     user-select: none;
-    filter: drop-shadow(0px 6px 45px $color_orange);
 }
 
 .swiper-slide {
@@ -87,8 +86,6 @@ $color_orange: #f36607;
 
     h2 {
         color: white;
-        border-radius: 8px;
-        border-top: 1px solid $color_orange;
         padding: 9px;
     }
 
